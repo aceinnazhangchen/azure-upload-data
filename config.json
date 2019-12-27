@@ -1,0 +1,11 @@
+{
+    "mysql":{
+        "host":"imudata.mysql.database.azure.com",
+        "user":"eng@imudata",
+        "password":"aceinna#666888",
+        "database":"openrtkdata"
+    },
+    "xlsx_file":"E:/WorkSpace/date process/openrtk datalist.xlsx",
+    "raw_data_path":"E:/WorkSpace/date process/dataset",
+    "result_data_path":"E:/WorkSpace/date process/resultset"
+}

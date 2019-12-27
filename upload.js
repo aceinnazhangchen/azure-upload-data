@@ -89,11 +89,12 @@ async function uploadResultData(version){
     var time = new Date().getTime();
     for(let i in dirlist){
       let file = dirlist[i];
-      let selectSql = `SELECT COUNT(id) as count FROM result_data_table where dataset=\'${file}\' and version=\`${version}\``;
+      let selectSql = `SELECT COUNT(id) as count FROM result_data_table where dataset=\'${file}\' and version=\'${version}\'`;
+	  console.log(selectSql);
       let result = await db.select(selectSql).catch((err) => {
         console.error("select error:", err.message);
       });
-      if(result && result[0].count == 1){
+      if(result && result[0].count >= 1){
         continue;
       }
 

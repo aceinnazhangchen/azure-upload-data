@@ -114,6 +114,8 @@ async function uploadResultData(version){
         console.log('The insert solution is: ', result2);
       }
     }
+
+    await db.dbend();
 }
 
 module.exports = {

@@ -19,7 +19,7 @@ async function dbconnect(){
 async function select(sql){
   return new Promise((resolve, reject) => {
     connection.query(sql,function (error, results) {
-      if (error) reject(error);;
+      if (error) reject(error);
       resolve(results);
     });
   });
@@ -28,7 +28,7 @@ async function select(sql){
 async function insert(sql,params){
   return new Promise((resolve, reject) => {
     connection.query(sql,params,function (error, results) {
-      if (error) reject(error);;
+      if (error) reject(error);
       resolve(results);
     });
   });

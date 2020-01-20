@@ -87,10 +87,23 @@ async function uploadResultData(version){
       return;
     }
     var time = new Date().getTime();
+    var versionParams = {
+      version:version,
+      time:time
+    };
+
+    var addVersionSql = 'INSERT INTO data_vesion_table SET ?';
+    let result_version = await db.insert(addVersionSql,versionParams).catch((err) => {
+      console.error("insert error:", err.message);
+    });
+    if(result_version){
+      console.log('The insert solution is: ', result_version);
+    }
+
     for(let i in dirlist){
       let file = dirlist[i];
       let selectSql = `SELECT COUNT(id) as count FROM result_data_table where dataset=\'${file}\' and version=\'${version}\'`;
-	  console.log(selectSql);
+	    console.log(selectSql);
       let result = await db.select(selectSql).catch((err) => {
         console.error("select error:", err.message);
       });

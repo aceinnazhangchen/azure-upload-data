@@ -30,7 +30,7 @@ async function UploadFile(localpath,blobName){
         const blobClient = containerClient.getBlobClient(blobName);
         const blockBlobClient = blobClient.getBlockBlobClient();
         const uploadBlobResponse = await blockBlobClient.uploadFile(localpath,{
-            concurrency: 20,
+            concurrency: 1,
             onProgress: (ev) => console.log(ev)
             });
         console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);

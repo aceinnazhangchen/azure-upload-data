@@ -1,6 +1,7 @@
 const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storage-blob");
 const file_sys = require('./utils/file_sys');
 const path = require("path");
+var fs = require("fs");
 
 // Enter your storage account name and shared key
 const account = process.env.ACCOUNT_NAME || "";
@@ -27,11 +28,14 @@ async function CreateContainer(){
 async function UploadFile(localpath,blobName){
     let exist = await file_sys.fileExists(localpath);
     if(exist){
-        const blobClient = containerClient.getBlobClient(blobName);
-        const blockBlobClient = blobClient.getBlockBlobClient();
-        const uploadBlobResponse = await blockBlobClient.uploadFile(localpath,{
-            concurrency: 1,
-            onProgress: (ev) => console.log(ev)
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+        // const uploadBlobResponse = await blockBlobClient.uploadFile(localpath,{
+        //     blockSize: 4 * 1024 * 1024, // 4MB block size
+        //     concurrency: 20, // 20 concurrency
+        //     onProgress: (ev) => console.log(ev)
+        //     });
+        const uploadBlobResponse = await blockBlobClient.uploadStream(fs.createReadStream(localpath), 4 * 1024 * 1024, 20, {
+              onProgress: (ev) => console.log(ev)
             });
         console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
     }

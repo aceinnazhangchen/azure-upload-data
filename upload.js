@@ -92,12 +92,12 @@ async function uploadResultData(version){
       time:time
     };
 
-    var addVersionSql = 'INSERT INTO data_vesion_table SET ?';
+    var addVersionSql = 'REPLACE INTO data_vesion_table SET ?';
     let result_version = await db.insert(addVersionSql,versionParams).catch((err) => {
-      console.error("insert error:", err.message);
+      console.error("REPLACE error:", err.message);
     });
     if(result_version){
-      console.log('The insert solution is: ', result_version);
+      console.log('The REPLACE solution is: ', result_version);
     }
 
     for(let i in dirlist){

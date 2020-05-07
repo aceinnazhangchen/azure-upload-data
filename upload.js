@@ -101,6 +101,7 @@ async function uploadResultData(version){
     }
 
     for(let i in dirlist){
+      let update = 0;
       let file = dirlist[i];
       let selectSql = `SELECT COUNT(id) as count FROM result_data_table where dataset=\'${file}\' and version=\'${version}\'`;
 	    console.log(selectSql);
@@ -108,7 +109,7 @@ async function uploadResultData(version){
         console.error("select error:", err.message);
       });
       if(result && result[0].count >= 1){
-        continue;
+        update = 1;
       }
 
       var params = {
@@ -120,12 +121,25 @@ async function uploadResultData(version){
       var upload_path = path.join(local_path,file);
       await storage.uploadAllFile(upload_path,params.blob);
 
-      var addSql = 'INSERT INTO result_data_table SET ?';
-      let result2 = await db.insert(addSql,params).catch((err) => {
-        console.error("insert error:", err.message);
-      });
-      if(result2){
-        console.log('The insert solution is: ', result2);
+      if(update == 0)//insert new line
+      {
+        var addSql = 'INSERT INTO result_data_table SET ?';
+        let result2 = await db.insert(addSql,params).catch((err) => {
+          console.error("insert error:", err.message);
+        });
+        if(result2){
+          console.log('The insert solution is: ', result2);
+        }
+      }
+      else if(update == 1){
+        var updateSql = 'UPDATE result_data_table SET time=? where dataset=? and version=?';
+        var update_params = [time,file,version];
+        let result2 = await db.update(updateSql,update_params).catch((err) => {
+          console.error("update error:", err.message);
+        });
+        if(result2){
+          console.log('The update solution is: ', result2);
+        }
       }
     }
 

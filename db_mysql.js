@@ -34,6 +34,15 @@ async function insert(sql,params){
   });
 }
 
+async function update(sql,params){
+  return new Promise((resolve, reject) => {
+    connection.query(sql,params,function (error, results) {
+      if (error) reject(error);
+      resolve(results);
+    });
+  });
+}
+
 async function dbend(){
   return new Promise((resolve, reject) => {
     connection.end(function (err){
@@ -51,5 +60,6 @@ module.exports = {
   dbconnect, 
   select,
   insert,
+  update,
   dbend,
 }; 

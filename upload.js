@@ -29,9 +29,10 @@ async function uploadRawData(){
             console.log(feilds);
         }
         else if(i > 0){
+            //blob
             var values = obj[0].data[i];
             values.push(raw_data_root+'/'+values[0]);
-            
+            //time
             var letter = values[0].substr(11,1);
             var hour = getTimebyLetter(letter);
             var minute = values[0].substr(12,2);
